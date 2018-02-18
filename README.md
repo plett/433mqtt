@@ -21,6 +21,16 @@ rules to pull the two apart isn't fun.
 ## Run rtl_433 and 433mqtt as:
 RTL433MQTTHOST=myhost RTL433MQTTUSER=myuser RTL433MQTTPASS=mypassword rtl_433 -q -F json -U | 433mqtt.py
 
+## Example Home Assistant config
+```
+sensor:
+  - platform: mqtt
+    state_topic: '/rtl_433/CurrentCost TX/77'
+    name: 'House Power Usage'
+    unit_of_measurement: 'W'
+    value_template: '{{ value_json.power0 }}'
+```
+
 ## TODO:
 * Dedupe messages - Kerui PIR sends its message lots of times to make sure it
   gets through
