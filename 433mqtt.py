@@ -5,7 +5,7 @@ import sys
 import os
 
 host = os.environ.get('RTL433MQTTHOST')
-port = int(os.environ.get('RTL433MQTTPORT', 1833))
+port = int(os.environ.get('RTL433MQTTPORT', 1883))
 username = os.environ.get('RTL433MQTTUSER','rtl_433')
 password = os.environ.get('RTL433MQTTPASS')
 topic = os.environ.get('RTL433MQTTTOPIC','/rtl_433')
@@ -27,6 +27,7 @@ if __name__ == "__main__":
     client.username_pw_set(username,password)
     client.tls_set()
     client.connect(host,port)
+    client.loop_start()
     while 1:
         try:
             line = sys.stdin.readline().rstrip()
@@ -56,6 +57,6 @@ if __name__ == "__main__":
         #print(model,'/',idname,'=', line)
         fulltopic = ''+topic+'/'+model+'/'+idname
         client.publish(fulltopic,line)
-        client.loop(0)
 
+    client.loop_stop()
     client.disconnect()
